@@ -1,0 +1,7 @@
+/*.tar
+/*.o
+tracegen
+test-csim
+test-trans
+csim
+csim-ref
