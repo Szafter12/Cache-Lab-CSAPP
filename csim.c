@@ -103,7 +103,8 @@ void proccess_cache(cache_t *cache, int s, int b, char *tracefile) {
     int size;
 
     while (fscanf(fp, " %c %lx,%d", &operation, &address, &size) > 0) {
-
+        uint64_t set_index = (address >> b) & ((1 << s) - 1);
+        uint64_t tag_index = address >> (s+b);
     }
 
     fclose(fp);
