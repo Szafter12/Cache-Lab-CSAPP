@@ -22,6 +22,102 @@ int is_transpose(int M, int N, int A[N][M], int B[M][N]);
 char transpose_submit_desc[] = "Transpose submission";
 void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 {
+    int i, j, k, l;
+    int v0, v1, v2, v3, v4, v5, v6, v7;
+
+    if (M == 32 && N == 32) {
+        for (i = 0; i < 32; i += 8) {
+            for (j = 0; j < 32; j += 8) {
+                for (k = i; k < i + 8; k++) {
+                    v0 = A[k][j];
+                    v1 = A[k][j + 1];
+                    v2 = A[k][j + 2];
+                    v3 = A[k][j + 3];
+                    v4 = A[k][j + 4];
+                    v5 = A[k][j + 5];
+                    v6 = A[k][j + 6];
+                    v7 = A[k][j + 7];
+
+                    B[j][k] = v0;
+                    B[j + 1][k] = v1;
+                    B[j + 2][k] = v2;
+                    B[j + 3][k] = v3;
+                    B[j + 4][k] = v4;
+                    B[j + 5][k] = v5;
+                    B[j + 6][k] = v6;
+                    B[j + 7][k] = v7;
+                }
+            }
+        }
+    }
+    else if (M == 64 && N == 64) {
+        for (i = 0; i < 64; i += 8) {
+            for (j = 0; j < 64; j += 8) {
+                for (k = i; k < i + 4; k++) {
+                    v0 = A[k][j];
+                    v1 = A[k][j + 1];
+                    v2 = A[k][j + 2];
+                    v3 = A[k][j + 3];
+                    v4 = A[k][j + 4];
+                    v5 = A[k][j + 5];
+                    v6 = A[k][j + 6];
+                    v7 = A[k][j + 7];
+
+                    B[j][k] = v0;
+                    B[j + 1][k] = v1;
+                    B[j + 2][k] = v2;
+                    B[j + 3][k] = v3;
+                    B[j][k + 4] = v4;
+                    B[j + 1][k + 4] = v5;
+                    B[j + 2][k + 4] = v6;
+                    B[j + 3][k + 4] = v7;
+                }
+                for (l = 0; l < 4; l++) {
+                    v0 = A[i + 4][j + l];
+                    v1 = A[i + 5][j + l];
+                    v2 = A[i + 6][j + l];
+                    v3 = A[i + 7][j + l];
+
+                    v4 = B[j + l][i + 4];
+                    v5 = B[j + l][i + 5];
+                    v6 = B[j + l][i + 6];
+                    v7 = B[j + l][i + 7];
+
+                    B[j + l][i + 4] = v0;
+                    B[j + l][i + 5] = v1;
+                    B[j + l][i + 6] = v2;
+                    B[j + l][i + 7] = v3;
+
+                    B[j + l + 4][i] = v4;
+                    B[j + l + 4][i + 1] = v5;
+                    B[j + l + 4][i + 2] = v6;
+                    B[j + l + 4][i + 3] = v7;
+                }
+                for (k = i + 4; k < i + 8; k++) {
+                    v4 = A[k][j + 4];
+                    v5 = A[k][j + 5];
+                    v6 = A[k][j + 6];
+                    v7 = A[k][j + 7];
+
+                    B[j + 4][k] = v4;
+                    B[j + 5][k] = v5;
+                    B[j + 6][k] = v6;
+                    B[j + 7][k] = v7;
+                }
+            }
+        }
+    }
+    else {
+        for (i = 0; i < N; i += 16) {
+            for (j = 0; j < M; j += 16) {
+                for (k = i; k < i + 16 && k < N; k++) {
+                    for (l = j; l < j + 16 && l < M; l++) {
+                        B[l][k] = A[k][l];
+                    }
+                }
+            }
+        }
+    }
 }
 
 /* 
@@ -56,10 +152,10 @@ void trans(int M, int N, int A[N][M], int B[M][N])
 void registerFunctions()
 {
     /* Register your solution function */
-    registerTransFunction(transpose_submit, transpose_submit_desc); 
+    registerTransFunction(transpose_submit, transpose_submit_desc);
 
     /* Register any additional transpose functions */
-    registerTransFunction(trans, trans_desc); 
+    registerTransFunction(trans, trans_desc);
 
 }
 
