@@ -1,7 +1,5 @@
 # Cache Lab
-
-### Project Title
-**Cache Lab** – CS:APP Cache Simulator & Cache-Friendly Matrix Transpose Optimizer.
+CS:APP Cache Simulator & Cache-Friendly Matrix Transpose Optimizer.
 
 ### What the project is
 A systems programming project from the classic CMU **CS:APP (Computer Systems: A Programmer's Perspective)** curriculum, implemented in C. The project consists of two core components: building a software-level cache simulator that tracks memory access behavior and designing cache-conscious matrix transposition algorithms to minimize cache miss penalties.
