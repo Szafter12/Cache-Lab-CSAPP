@@ -51,3 +51,7 @@ make
 - Cache-Conscious Optimization: Loop blocking/tiling, register-level buffering, and memory access reordering.
 - Bitwise Address Parsing: Bit shifting and bitmasking in C for 64-bit address manipulation.
 - C Systems Programming: Dynamic memory management, file I/O, and getopt command-line argument parsing.
+
+### Images/video demos
+
+![Screenshot](result.png)
